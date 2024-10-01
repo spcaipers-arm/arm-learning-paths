@@ -1,16 +1,38 @@
-name: Project Card Change Workflow
+name: Add PR to Project
 
 on:
-  project_card:
-    types: [created, updated, moved, converted, deleted]
+  pull_request:
+    types: [opened]
 
 jobs:
-  project_card_change_job:
+  add_pr_to_project:
     runs-on: ubuntu-latest
     steps:
-      - name: Log Project Card Change
-        run: |
-          echo "A project card change event has occurred!"
-          echo "Event type: ${{ github.event.action }}"
-          echo "Card ID: ${{ github.event.card.id }}"
-          echo "Card content: ${{ github.event.card.content_url }}"
+      # App tokens last 1h
+      - uses: tibdex/github-app-token@v2
+        id: get_installation_token
+        with:
+          app_id: 366894
+          private_key: ${{ secrets.MY_OWN_APP_PRIVATE_KEY }}
+          revoke: false
+      - name: Add PR to Project Board
+        uses: actions/github-script@v6
+        with:
+          token: ${{ steps.get_installation_token.outputs.token }}
+          script: |
+            const projectNumber = 1; // Replace with your project's number
+            const columnName = 'To Do'; // Replace with your project's column
+            const { data: projects } = await github.projects.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+            const project = projects.find(proj => proj.number === projectNumber);
+            const { data: columns } = await github.projects.listColumns({
+              project_id: project.id,
+            });
+            const column = columns.find(col => col.name === columnName);
+            await github.projects.createCard({
+              column_id: column.id,
+              content_id: context.payload.pull_request.id,
+              content_type: 'PullRequest',
+            });
