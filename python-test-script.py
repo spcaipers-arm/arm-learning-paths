@@ -6,7 +6,7 @@ GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 GITHUB_REPOSITORY = os.getenv("GITHUB_REPOSITORY")
 PULL_REQUEST_ID = os.getenv("PULL_REQUEST_ID")  # PR ID from the GitHub Actions context
 PROJECT_NUMBER = 1  # Replace with your project's number
-COLUMN_NAME = 'To Do'  # Replace with your desired column name
+COLUMN_NAME = 'Backlog'  # Replace with your desired column name
 
 # Set headers for authentication
 headers = {
