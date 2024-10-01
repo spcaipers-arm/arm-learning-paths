@@ -18,7 +18,7 @@ jobs:
       - name: Add PR to Project Board
         uses: actions/github-script@v6
         with:
-          token: ${{ steps.get_installation_token.outputs.token }}
+          github-token: ${{ steps.get_installation_token.outputs.token }}
           script: |
             const projectNumber = 1; // Replace with your project's number
             const columnName = 'To Do'; // Replace with your project's column
