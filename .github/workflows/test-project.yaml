@@ -32,4 +32,4 @@ jobs:
           GITHUB_TOKEN: ${{ steps.get_installation_token.outputs.token }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           PULL_REQUEST_ID: ${{ github.event.pull_request.id }}
-        run: python your_script.py
+        run: python python-test-script.py
