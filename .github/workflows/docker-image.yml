@@ -1,0 +1,25 @@
+name: Project Update Workflow
+
+on:
+  project:
+    types: [updated]
+
+jobs:
+  project_update_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log Project Update
+        run: |
+          echo "A project update event has occurred!"
+          echo "Event type: ${{ github.event.action }}"
+          echo "Project ID: ${{ github.event.project.id }}"
+          echo "Project name: ${{ github.event.project.name }}"
+          echo "Project URL: ${{ github.event.project.html_url }}"
+          
+          # Check for specific fields that might indicate changes
+          if [[ -n "${{ github.event.changes }}" ]]; then
+            echo "Changes made:"
+            echo "${{ github.event.changes }}"
+          else
+            echo "No specific changes were recorded."
+          fi
