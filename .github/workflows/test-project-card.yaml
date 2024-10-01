@@ -1,0 +1,16 @@
+name: Project Card Change Workflow
+
+on:
+  project_card:
+    types: [created, updated, moved, converted, deleted]
+
+jobs:
+  project_card_change_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log Project Card Change
+        run: |
+          echo "A project card change event has occurred!"
+          echo "Event type: ${{ github.event.action }}"
+          echo "Card ID: ${{ github.event.card.id }}"
+          echo "Card content: ${{ github.event.card.content_url }}"
