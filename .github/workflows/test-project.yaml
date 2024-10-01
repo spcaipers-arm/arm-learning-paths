@@ -1,0 +1,35 @@
+name: Add PR to Project
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  add-pr-to-project:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      # App tokens last 1h
+      - uses: tibdex/github-app-token@v2
+        id: get_installation_token
+        with:
+          app_id: 1013076
+          private_key: ${{ secrets.MY_OWN_APP_PRIVATE_KEY }}
+          revoke: false
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run Python script
+        env:
+          GITHUB_TOKEN: ${{ steps.get_installation_token.outputs.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          PULL_REQUEST_ID: ${{ github.event.pull_request.id }}
+        run: python python-test-script.py
