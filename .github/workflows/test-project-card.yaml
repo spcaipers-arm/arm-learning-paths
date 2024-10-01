@@ -12,7 +12,7 @@ jobs:
       - uses: tibdex/github-app-token@v2
         id: get_installation_token
         with:
-          app_id: 366894
+          app_id: 1013076
           private_key: ${{ secrets.MY_OWN_APP_PRIVATE_KEY }}
           revoke: false
       - name: Add PR to Project Board
